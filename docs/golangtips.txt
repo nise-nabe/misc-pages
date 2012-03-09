@@ -1,4 +1,4 @@
-文字列表示する
+h3. 文字列表示する
 
 http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
   var buf bytes.Buffer
@@ -6,13 +6,14 @@ http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
   w.Write(buf.Bytes())
 })
 
-リダイレクト
+h3. リダイレクト
+
 handler := http.RedirectHandler("/edit", 200)
 handler.ServeHTTP(w, r)
 
 http.Reirect(w, r, "/edit, 302)
 
-mgo 全件検索
+h3. mgo 全件検索
 
 session, _ := mgo.Dial("localhost")
 defer session.Close()
@@ -20,3 +21,23 @@ session.SetMode(mgo.Monotonic, true)
 c := session.DB("test").C("person")
 result := []Person{}
 c.Find(nil).All(&result)
+
+
+h3. テンプレートで配列の値を全部出力する
+
+参考URL: http://labix.org/mgo
+
+type Person struct {
+  Name string
+  Phone string
+}
+
+result := []Person{{"aname", "aphone"}, {"bname", "bphone"}}
+t, _ := template.ParseFiles("test.html")
+t.Execute(w, result)
+
+<ol>
+{{range .}}
+<li>{{.Name}} {{.Phone}}</li>
+{{end}}
+</ol>
