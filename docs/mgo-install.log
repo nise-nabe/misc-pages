@@ -1,0 +1,3 @@
+ $ sudo apt-get install bzr
+ $ go get launchpad.net/mgo
+ $ ls $GOROOT/src/pkg/launchpad.net/mgo
