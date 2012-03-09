@@ -3,5 +3,5 @@
  $ git clone git://github.com/mongodb/mongo.git
  $ cd mongo
  $ scons all
-# mongodb $B$N%S%k%I$C$F7k9=;~4V$+$+$k$s$@$J$!(B 
+# mongodb のビルドって結構時間かかるんだなぁ 
  $ scons --prefix=/path/to/install/mongo install
