@@ -1,0 +1,1 @@
+空きメモリを確認する free  http://www.linuxcertif.com/man/1/free/ja/
