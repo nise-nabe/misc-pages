@@ -4,3 +4,4 @@
  $ cd mongo
  $ scons all
 # mongodb のビルドって結構時間かかるんだなぁ 
+ $ scons --prefix=/path/to/install/mongo install
