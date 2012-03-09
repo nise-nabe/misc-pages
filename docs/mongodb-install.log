@@ -1,0 +1,5 @@
+ $ sudo apt-get install -y git-core build-essential scons
+ $ sudo apt-get install -y libboost-dev libboost-program-options-dev libboost-thread-dev libboost-filesystem-dev
+ $ git clone git://github.com/mongodb/mongo.git
+ $ cd mongo
+ $ scons all
