@@ -1,0 +1,160 @@
+textile 記法
+
+html/template の Template#Execute() の第二引数が何されてるか見てみる．
+
+html/template/template.go
+<pre>
+ 34 // Execute applies a parsed template to the specified data object,
+ 35 // writing the output to wr.
+ 36 func (t *Template) Execute(wr io.Writer, data interface{}) (err error) {
+ 37 >_______t.nameSpace.mu.Lock()
+ 38 >_______if !t.escaped {
+ 39 >_______>_______if err = escapeTemplates(t, t.Name()); err != nil {
+ 40 >_______>_______>_______t.escaped = true
+ 41 >_______>_______}
+ 42 >_______}
+ 43 >_______t.nameSpace.mu.Unlock()
+ 44 >_______if err != nil {
+ 45 >_______>_______return
+ 46 >_______}
+ 47 >_______return t.text.Execute(wr, data)
+ 48 }
+<pre>
+
+t の text にある Execute() を呼び出してるので html/template/Template の定義見てみる．
+
+html/template/template.go
+<pre>
+ 17 // Template is a specialized template.Template that produces a safe HTML
+ 18 // document fragment.
+ 19 type Template struct {
+ 20 >_______escaped bool
+ 21 >_______// We could embed the text/template field, but it's safer not to because
+ 22 >_______// we need to keep our version of the name space and the underlying
+ 23 >_______// template's in sync.
+ 24 >_______text       *template.Template
+ 25 >_______*nameSpace // common to all associated templates
+ 26 }
+</pre>
+
+この場合の *template.Template は text/template/Template らしい．
+
+text/template/exec.go 
+<pre>
+103 // Execute applies a parsed template to the specified data object,
+104 // and writes the output to wr.
+105 func (t *Template) Execute(wr io.Writer, data interface{}) (err error) {
+106 >_______defer errRecover(&err)
+107 >_______value := reflect.ValueOf(data)
+108 >_______state := &state{
+109 >_______>_______tmpl: t,
+110 >_______>_______wr:   wr,
+111 >_______>_______line: 1,
+112 >_______>_______vars: []variable{{"$", value}},
+113 >_______}
+114 >_______if t.Tree == nil || t.Root == nil {
+115 >_______>_______state.errorf("%q is an incomplete or empty template", t.name)
+116 >_______}
+117 >_______state.walk(value, t.Root)
+118 >_______return
+119 }
+120 
+121 // Walk functions step through the major pieces of the template structure,
+122 // generating output as they go.
+123 func (s *state) walk(dot reflect.Value, n parse.Node) {
+124 >_______switch n := n.(type) {
+125 >_______case *parse.ActionNode:
+126 >_______>_______s.line = n.Line
+127 >_______>_______// Do not pop variables so they persist until next end.
+128 >_______>_______// Also, if the action declares variables, don't print the result.
+129 >_______>_______val := s.evalPipeline(dot, n.Pipe)
+130 >_______>_______if len(n.Pipe.Decl) == 0 {
+131 >_______>_______>_______s.printValue(n, val)
+132 >_______>_______}
+133 >_______case *parse.IfNode:
+134 >_______>_______s.line = n.Line
+135 >_______>_______s.walkIfOrWith(parse.NodeIf, dot, n.Pipe, n.List, n.ElseList)
+136 >_______case *parse.ListNode:
+137 >_______>_______for _, node := range n.Nodes {
+138 >_______>_______>_______s.walk(dot, node)
+139 >_______>_______}
+140 >_______case *parse.RangeNode:
+141 >_______>_______s.line = n.Line
+142 >_______>_______s.walkRange(dot, n)
+143 >_______case *parse.TemplateNode:
+144 >_______>_______s.line = n.Line
+145 >_______>_______s.walkTemplate(dot, n)
+146 >_______case *parse.TextNode:
+147 >_______>_______if _, err := s.wr.Write(n.Text); err != nil {
+148 >_______>_______>_______s.error(err)
+149 >_______>_______}
+150 >_______case *parse.WithNode:
+151 >_______>_______s.line = n.Line
+152 >_______>_______s.walkIfOrWith(parse.NodeWith, dot, n.Pipe, n.List, n.ElseList)
+153 >_______default:
+154 >_______>_______s.errorf("unknown node: %s", n)
+155 >_______}
+156 }
+</pre>
+
+117 行目 t.Root ?
+
+text/template/parse/parse.go
+<pre>
+ 19 // Tree is the representation of a single parsed template.
+ 20 type Tree struct {
+ 21 >_______Name string    // name of the template represented by the tree.
+ 22 >_______Root *ListNode // top-level root of the tree.
+ 23 >_______// Parsing only; cleared after parse.
+ 24 >_______funcs     []map[string]interface{}
+ 25 >_______lex       *lexer
+ 26 >_______token     [2]item // two-token lookahead for parser.
+ 27 >_______peekCount int
+ 28 >_______vars      []string // variables defined at the moment.
+ 29 }
+</pre>
+
+Root あった． ListNode ?
+
+text/template/parse/node.go
+<pre>
+ 58 // ListNode holds a sequence of nodes.
+ 59 type ListNode struct {
+ 60 >_______NodeType
+ 61 >_______Nodes []Node // The element nodes in lexical order.
+ 62 }
+</pre>
+
+NodeType ?
+
+text/template/parse/node.go
+<pre>
+ 26 // NodeType identifies the type of a parse tree node.
+ 27 type NodeType int
+</pre>
+
+int だった．下記のやつがそのリストかな．
+
+text/template/parse/node.go
+<pre>
+ 35 const (
+ 36 >_______NodeText       NodeType = iota // Plain text.
+ 37 >_______NodeAction                     // A simple action such as field evaluation.
+ 38 >_______NodeBool                       // A boolean constant.
+ 39 >_______NodeCommand                    // An element of a pipeline.
+ 40 >_______NodeDot                        // The cursor, dot.
+ 41 >_______nodeElse                       // An else action. Not added to tree.
+ 42 >_______nodeEnd                        // An end action. Not added to tree.
+ 43 >_______NodeField                      // A field or method name.
+ 44 >_______NodeIdentifier                 // An identifier; always a function name.
+ 45 >_______NodeIf                         // An if action.
+ 46 >_______NodeList                       // A list of Nodes.
+ 47 >_______NodeNumber                     // A numerical constant.
+ 48 >_______NodePipe                       // A pipeline of commands.
+ 49 >_______NodeRange                      // A range action.
+ 50 >_______NodeString                     // A string constant.
+ 51 >_______NodeTemplate                   // A template invocation action.
+ 52 >_______NodeVariable                   // A $ variable.
+ 53 >_______NodeWith                       // A with action.
+ 54 )
+</pre>

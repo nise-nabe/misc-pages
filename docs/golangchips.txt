@@ -1,0 +1,13 @@
+文字列表示する
+
+http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  var buf bytes.Buffer
+  buf.WriteString("")
+  w.Write(buf.Bytes())
+})
+
+リダイレクト
+handler := http.RedirectHandler("/edit", 200)
+handler.ServeHTTP(w, r)
+
+http.Reirect(w, r, "/edit, 302)
