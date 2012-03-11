@@ -7,7 +7,10 @@ import (
 )
 
 func main() {
-        str := "1234 2 3333 4 5  aaaaa"
+        str := `1234 2 3333 4 5  aaaaa
+s
+aaa
+`
         next := func(str string) func() string {
                 reg, _ := regexp.Compile("\\S+")
                 is := suffixarray.New([]byte(str)).FindAllIndex(reg, -1)
