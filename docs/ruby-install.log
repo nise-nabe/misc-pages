@@ -1,0 +1,8 @@
+
+wget ftp://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p125.tar.gz
+tar xzvf ruby-1.9.3-p125.tar.gz
+cd ruby-1.9.3-p125
+./configure --prefix=$HOME/.rbenv/versions/1.9.2-p290
+make
+paco make install
+# 途中
