@@ -4,7 +4,7 @@
  $ cd mongo
  $ scons all
 # mongodb のビルドって結構時間かかるんだなぁ 
- $ scons --prefix=/path/to/install/mongo install
- $ echo "PATH=$PATH:/path/to/install/mongo" >> ~/.zshrc 
+ $ scons --prefix=$INSTALL/mongo install
+ $ echo "PATH=$PATH:$INSTALL/mongo" >> ~/.zshrc
  $ source ~/.zshrc
- $ mongod --dbpath=/path/to/datastore
+ $ mongod --dbpath=$INSTALL/datastore

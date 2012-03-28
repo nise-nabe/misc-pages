@@ -3,7 +3,7 @@
 wget "http://downloads.sourceforge.net/project/paco/paco/2.0.9/paco-2.0.9.tar.gz?r=&ts=1332566363&use_mirror=jaist" -O paco-2.0.9.tar.gz
 tar  xzvf paco-2.0.9.tar.gz
 cd paco-2.0.9
-./configure --prefix=/path/to/install --with-paco-logdir=/path/to/logfile --disable-gpaco
+./configure --prefix=$INSTALL --with-paco-logdir=$INSTALL/logfile --disable-gpaco
 make 
 make intall
 echo "export \$HOME/bin:\$PATH" >> ~/.zshenv

@@ -1,6 +1,6 @@
  $ sudo apt-get install build-essential libncurses5-dev mercurial
  $ hg clone https://vim.googlecode.com/hg/ vim
  $ cd vim
- $ ./configure --prefix=/path/to/install/vim --enable-multibyte --with-features=fuge
+ $ ./configure --prefix=$INSTALL/vim --enable-multibyte --with-features=fuge
  $ make
  $ make install
