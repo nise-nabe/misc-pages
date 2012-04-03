@@ -1,7 +1,7 @@
- $ sudo apt-get install build-essential libevent-dev libncurses5-dev 
- $ wget http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.6/tmux-1.6.tar.gz
- $ tar xzvf tmux-1.6.tar.gz
- $ cd tmux-1.6
- $ ./configure --prefix=$INSTALL/tmux
- $ make
- $ make install
+sudo apt-get install build-essential libevent-dev libncurses5-dev 
+wget http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.6/tmux-1.6.tar.gz
+tar xzvf tmux-1.6.tar.gz
+cd tmux-1.6
+./configure --prefix=$INSTALL/tmux
+make
+make install
