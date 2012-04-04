@@ -1,0 +1,10 @@
+sudo apt-get install php5-curl
+curl -sL http://tinyurl.com/7ccchmg | sudo php
+git clone git@git01.phpfog.com:なんとかかんとか
+cd なんとかかんとか
+git clone git@github.com:openpne/OpenPNE3.git
+cd plugins
+git clone git@github.com:ebihara/opAuthMailAddressPlugin.git
+cd ..
+./symfony doctrine:build-model
+./symfony plugins:publish-assets
