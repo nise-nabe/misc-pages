@@ -1,0 +1,2 @@
+wget --no-check-certificate http://cpanmin.us/ -O ~/bin/cpanm
+chmod +x ~/bin/cpanm
