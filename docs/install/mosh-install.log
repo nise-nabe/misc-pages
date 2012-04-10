@@ -1,0 +1,7 @@
+sudo apt-get install pkg-config protobuf-compiler libprotobuf-dev
+git clone https://github.com/keithw/mosh
+cd mosh
+./autogen.sh
+./configure --prefix=$INSTALL
+make
+paco -D make install
