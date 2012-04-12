@@ -56,7 +56,7 @@ let g:syntastic_check_on_open = 1
 let g:ackprg="ack -H --nocolor --nogroup --column"
 
 " plugin calendar.vim
-let g:calendar_wruler = "$BF|(B $B7n(B $B2P(B $B?e(B $BLZ(B $B6b(B $BEZ(B"
+let g:calendar_wruler = "日 月 火 水 木 金 土"
 let g:calendar_diary = "~/.diary"
 let calendar_action = "QFixHowmCalendarDiary"
 let calendar_sign = "QFixHowmCalendarSign"
