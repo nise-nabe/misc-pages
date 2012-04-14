@@ -1,0 +1,7 @@
+wget "http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/release/indigo/SR2/eclipse-java-indigo-SR2-macosx-cocoa-x86_64.tar.gz&url=http://ftp.jaist.ac.jp/pub/eclipse/technology/epp/downloads/release/indigo/SR2/eclipse-java-indigo-SR2-macosx-cocoa-x86_64.tar.gz&mirror_id=105" -O eclipse-java-indigo-SR2-macosx-cocoa-x86_64.tar.gz
+tar xzvf eclipse-java-indigo-SR2-macosx-cocoa-x86_64.tar.gz
+cd eclipse/dropins
+mkdir nlpack 
+wget http://sourceforge.jp/frs/redir.php?m=jaist&f=%2Fblancofw%2F53006%2FNLpackja-eclipse-SDK-3.7-blancofw20110822.zip -O FNLpackja-eclipse-SDK-3.7-blancofw20110822.zip
+unzip FNLpackja-eclipse-SDK-3.7-blancofw20110822.zip
+mv eclipse nlpack
