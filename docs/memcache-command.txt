@@ -1,0 +1,4 @@
+ $ memcached &
+ $ telnet localhost 11211
+ stats items
+ stats cachedump 1 100
