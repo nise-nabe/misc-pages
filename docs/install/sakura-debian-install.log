@@ -1,0 +1,10 @@
+ $ su
+ % aptitude install sudo
+ % export EDITOR=vi; visudo
+%nise-nabe ALL =(ALL) ALL
+ % exit
+ $ sudo aptitude update; sudo aptitude upgrade
+ $ sudo aptitude install vim 
+ $ sudo vim /etc/ssh/sshd_config
+Port=????
+ $ sudo service ssh restart
