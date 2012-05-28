@@ -9,6 +9,6 @@ $(function() {
         template = "<li><a href=\"{{url}}\">{{url}}</li>",
         content = $("#content");
     li.forEach(function(elem) {
-        $("#links").append($.Mustache(template, elem));
+        $("#links").append($.mustache(template, elem));
     });
 });
