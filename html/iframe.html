@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="web/js/jquery.min.js"></script>
+    <script type="text/javascript">
+      (function(){
+       $('#output').appendText($('iframe').contents().find("#in-id"));
+       });
+    </script>
+  </head>
+  <body>
+    <iframe src="/html/iiframe.html" height="200" width="300" />  
+    <div id="output"></div>
+  </body>
+</html>
