@@ -10,8 +10,8 @@
           '<div>'
             + '<div class="fuga">aaa</div>'
             + '</div>';
-           var mus =  $.mustache(template);
-           $(mus).find('.fuga').live('click', function() {
+           var mus = $($.mustache(template));
+           mus.find('.fuga').live('click', function() {
              alert('hoge');
            });
           $('#aaa').html(mus);
