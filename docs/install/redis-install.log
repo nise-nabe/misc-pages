@@ -10,3 +10,17 @@ tar xvf redis-2.6.4.tar.gz
 cd redis-2.6.4
 make
 make test
+
+wget https://raw.github.com/gist/257298/d48b84d89289df39eaddc53f1e9a918f776b3074/redis-server-for-init.d-startup
+vim redis-server-for-init.d-startup
+sudo mv redis-server-for-init.d-startup /etc/init.d/redis-server 
+sudo ln -s src/redis-server /usr/bin/
+sudo mkdir /etc/redis
+sudo cp redis.conf /etc/redis
+sudo groupadd redis
+sudo useradd -r -g redis redis
+sudo mkdir /var/redis
+sudo chown -R redis /var/redis
+sudo touch /var/log/redis.log
+sudo chwon redis:redis /var/log/redis.log
+sudo service redis-server start
