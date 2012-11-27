@@ -1,0 +1,6 @@
+$ wget http://ftp.gnu.org/gnu/parallel/parallel-20121122.tar.bz2
+$ tar xvf parallel-20121122.tar.bz2
+$ cd parallel-20121122
+$ ./configure --prefix=$INSALL_PATH
+$ make 
+$ make install
